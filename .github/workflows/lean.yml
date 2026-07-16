@@ -25,6 +25,7 @@ jobs:
       - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
         with:
           build: true
+          leanchecker: true
 
       - name: Print principal theorem axioms
         run: lake env lean RequestProject/Audit.lean

@@ -80,7 +80,7 @@ proof-producing escape hatches, runs independent exhaustive checks of the finite
 identities, executes `lake build`, and prints the axioms of the two principal declarations.
 
 GitHub Actions performs those checks on every push, pull request, and manual dispatch. It also
-runs Lean's bundled independent environment checker. The authoritative Lean axiom audit is in
+runs Lean's bundled `leanchecker` environment recheck. The authoritative Lean axiom audit is in
 [`RequestProject/Audit.lean`](RequestProject/Audit.lean).
 
 The reconstructed paper source is available at [`paper/cdc_proof.tex`](paper/cdc_proof.tex).

@@ -3,6 +3,7 @@ name: Verify formalization
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,7 +12,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Verify source manifest
         run: sha256sum -c SHA256SUMS
@@ -21,7 +22,7 @@ jobs:
           ./audit/source_scan.sh
           python3 ./audit/finite_algebra_check.py
 
-      - uses: leanprover/lean-action@v1
+      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
         with:
           build: true
 

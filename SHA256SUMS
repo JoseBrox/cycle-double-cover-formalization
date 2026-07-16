@@ -1,4 +1,4 @@
-eadeecf0fabd4dd51050e2ec20ceb695668bf02b838097917bf026815ea9d6a2  ./.github/workflows/lean.yml
+0ac8041b56e8c72315e9d857d7b787e2a439eb95e2b727777d2f8ae59a60c7fb  ./.github/workflows/lean.yml
 77b8523987c4292767171ec5cd83d5a9c50a06cb6dd282e2607f806e61232f9a  ./AUDIT_REPORT.md
 fc3d823cdde317c46a43e37a3c800b48209a00bf2cdf2b41abfa14e0cf41c161  ./CycleDoubleCover.lean
 182ecd3a913a6a3afc6469be2c689840bc6fcfe552f1d9b69d7a27379ad211c5  ./DEPENDENCY_MAP.md
@@ -21,7 +21,7 @@ a8ca3eb46766ea2fd49a709a60f0d589511f662f6236f0d3ab022c066c72efe8  ./RequestProje
 34e479a677e416212154e7654db8a43f04f23d698cf3437239a43aa2c0457e8b  ./RequestProject/PairLabels.lean
 52237fdd1f68da2e54066db4d64587879605768179b1d227244a4f93a8a99612  ./VERIFY.sh
 4cef000d2b97240cee821500d863b72175bd81d96ee261de0f3133a659e70b8d  ./audit/finite_algebra_check.py
-4fb49cd345b0c094e329d566ee503688b189afec3c094762d5f94f6c9a7e417c  ./audit/source_scan.sh
+a9acaf93f8130a70a54111960adb009ad787fe9edc2ffb83a1ce8e1a28778c5e  ./audit/source_scan.sh
 116c6ef00aa899fb38c08c5e4c92c0e434d0e7f9d574fcb5d4d42cc90ffb07cb  ./lake-manifest.json
 958beaa75cbd70c8ad3ce3310d53ceb736b2525fb7c81f41e4b8c42528487910  ./lakefile.toml
 db7bb24b756d745bbde83fe92718b51bd3625dae3701ba0f598d0eedcd3f3028  ./lean-toolchain

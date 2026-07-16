@@ -94,7 +94,7 @@ This repository makes the check reproducible. On a networked machine with `elan`
 
 That command verifies the source manifest, performs the source scan and independent finite checks,
 runs `lake build`, and executes the Lean axiom audit. GitHub Actions runs those checks and also
-invokes Lean's bundled independent environment checker.
+invokes Lean's bundled `leanchecker` environment recheck.
 
 ## Curatorial changes
 

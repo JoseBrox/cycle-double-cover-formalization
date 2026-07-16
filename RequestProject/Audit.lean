@@ -1,0 +1,9 @@
+import CycleDoubleCover
+
+set_option autoImplicit false
+
+#check CycleDoubleCover.OrientedMultiGraph.cycleDoubleCover_of_nowhereZero_gammaFlow
+#check CycleDoubleCover.OrientedMultiGraph.cycleDoubleCoverConjecture_of_gammaFlow_of_cubicReduction
+
+#print axioms CycleDoubleCover.OrientedMultiGraph.cycleDoubleCover_of_nowhereZero_gammaFlow
+#print axioms CycleDoubleCover.OrientedMultiGraph.cycleDoubleCoverConjecture_of_gammaFlow_of_cubicReduction

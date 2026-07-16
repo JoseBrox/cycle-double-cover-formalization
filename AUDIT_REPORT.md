@@ -49,8 +49,8 @@ The development contains formal versions of:
 * the self-contained core theorem.
 
 The formerly brute-force proofs of `pairSet_card`, `pairSet_eq_iff`, and
-`local_evenness_count` are now structural. Uses of `decide` remaining in the project are confined
-to small finite bookkeeping, concrete regression examples, or simplification support; there is no
+`local_evenness_count` are structural. Uses of `decide` remaining in the project are confined to
+small finite bookkeeping, concrete regression examples, or simplification support; there is no
 `native_decide`.
 
 ### Independent finite checks
@@ -76,32 +76,41 @@ The curated source contains no occurrence of:
 * `exact?` placeholders.
 
 `RequestProject/Audit.lean` checks the two principal declarations and invokes `#print axioms` on
-each. The Aristotle build report states that both depend only on `propext`, `Classical.choice`, and
+each. Aristotle's build report states that both depend only on `propext`, `Classical.choice`, and
 `Quot.sound`, not on a project-defined postulate.
 
 ## Build-verification status
 
-The supplied Aristotle report records a clean build with Lean `v4.28.0` and Mathlib `v4.28.0`
-(commit `8f9d9cff6bd728b17a24e163c9402775d9e6a365`). The original audit environment did not contain Lean
-and had no network access with which to install the pinned toolchain, so that build was not independently
-rerun there.
+Aristotle's supplied report records a clean build with Lean `v4.28.0` and Mathlib `v4.28.0`
+(commit `8f9d9cff6bd728b17a24e163c9402775d9e6a365`). The original audit environment did not contain
+Lean and had no network access with which to install the pinned toolchain, so that build was not
+independently rerun there.
 
-This GitHub repository contains an automated workflow which verifies the canonical source archive,
-extracts it, runs the independent audits, and invokes the pinned Lean build.
+This repository makes the check reproducible. On a networked machine with `elan`, execute:
 
-## Curatorial changes relative to Aristotle's raw archive
+```bash
+./VERIFY.sh
+```
 
-The Lean proof source is unchanged except for one comment-only correction in `Duality.lean`:
-the cubic-vertex identity `x + y + z = 0` is described as unnumbered, consistently with the paper
-and `DEPENDENCY_MAP.md`.
+That command verifies the source manifest, performs the source scan and independent finite checks,
+runs `lake build`, and executes the Lean axiom audit. GitHub Actions runs the same process.
 
-The raw `ARISTOTLE_SUMMARY.md` was not copied into the curated Lean project because it concatenated
-two runs and its older section contained obsolete declaration names and an obsolete Petersen-test
-claim. The exact original archive is retained inside the canonical source archive under `provenance/`.
+## Curatorial changes
+
+The mathematical declarations and proof terms are unchanged from the audited Aristotle revision.
+The publication pass made only two source-text edits:
+
+1. a comment in `Duality.lean` now correctly describes `x + y + z = 0` as an unnumbered identity;
+2. an obsolete prompt-style comment in `PairLabels.lean` was replaced by a concise description of
+   the cycle-decomposition step.
+
+Documentation was reorganized to state the theorem and its limitations before discussing
+reproducibility. The source files are directly browsable, and the README supplies a module-by-module
+proof roadmap. Long tactic proofs were not reformatted merely for cosmetic reasons.
 
 ## Scope limitation
 
-This is a genuine formalization of the paper's new reduction and linear-algebra argument, conditional
-on the two cited external graph-theoretic results. It is not a formalization of those two external
-results, nor of the equivalence between `EveryEdgeInCycle` and a separately defined no-bridge
-predicate. The README and theorem names state these limitations explicitly.
+This is a genuine formalization of the paper's new reduction and linear-algebra argument,
+conditional on the two cited external graph-theoretic results. It is not a formalization of those
+two external results, nor of the equivalence between `EveryEdgeInCycle` and a separately defined
+no-bridge predicate. The README and theorem names state these limitations explicitly.

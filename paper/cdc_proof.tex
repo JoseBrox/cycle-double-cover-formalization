@@ -1,0 +1,286 @@
+\documentclass{amsart}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[margin=0.78in]{geometry}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Gammavec}{\Gamma}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\im}{\operatorname{im}}
+
+\title{A Proof of the Cycle Double Cover Conjecture}
+\author{OPENAI}
+\date{}
+
+\begin{document}
+
+\begin{abstract}
+We prove the cycle double cover conjecture, posed by Tutte, Itai and Rodeh,
+Szekeres, and Seymour, which asserts that every bridgeless undirected graph has
+a collection of cycles which covers every edge exactly twice.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+A \emph{cycle double cover} of a graph is a multiset of cycles in which every
+edge occurs exactly twice. The conjecture was posed by Tutte~\cite{Tutte1987},
+Itai and Rodeh~\cite{ItaiRodeh1978}, Szekeres~\cite{Szekeres1973}, and
+Seymour~\cite{Seymour1979}. See the survey of Jaeger~\cite{Jaeger1985} for
+further background.
+
+\begin{theorem}
+Every finite bridgeless undirected graph has a cycle double cover.
+\end{theorem}
+
+Among partial results, Jaeger observed that the conjecture holds for planar
+graphs by taking the facial boundary cycles of their blocks
+\cite[Sections~2.1 and~3.1]{Jaeger1985}, Szekeres observed that it holds for
+3-edge-colourable cubic graphs by taking the three unions of pairs of colour
+classes \cite[p.~367]{Szekeres1973}, and Alspach, Goddyn, and Zhang proved it
+for bridgeless graphs with no Petersen subdivision~\cite{AlspachGoddynZhang1994}.
+The proof proceeds by first using that it suffices (as is standard) to consider
+cubic graphs. Then, using the 8-flow theorem and a result of Tutte, we have a
+labeling of the edges by nonzero elements of $\Gamma=\F_2^3$ such that the sum
+at each vertex is zero. The key reduction is then to convert this labeling into
+a labeling of the edges by sets of two elements in $\Gamma$ such that each
+element of $\Gamma$ appears either zero or twice next to a given vertex. This
+reduction eventually reduces to an elementary linear algebra argument.
+
+\medskip
+\noindent\textbf{Statement of AI use.}
+The proof in this note is entirely due to GPT 5.6 Sol Ultra and the writeup
+with Codex (with GPT 5.6 Sol).
+
+\section{Proof of the conjecture}
+
+We allow parallel edges and regard two parallel edges as a cycle. By
+Jaeger~\cite[Proposition~4]{Jaeger1985}, it suffices to treat loopless cubic
+graphs. In fact, Jaeger observed that a minimum counterexample must fail to be
+3-edge-colourable---that is, it must be a snark---and we return to this
+observation below.
+
+Fix an orientation of a graph. If $A$ is an abelian group, an $A$-flow is a
+map $f:E(G)\to A$ for which, at every vertex, the sum on edges directed out
+equals the sum on edges directed in. It is \emph{nowhere-zero} if $f(e)\ne 0$
+for every edge. For an integer $k\ge 2$, an \emph{integer $k$-flow} is an
+integer-valued flow $\phi$ satisfying $0<|\phi(e)|<k$ on every edge.
+
+Let $\Gamma=\F_2^3$, written additively. Kilpatrick and Jaeger independently
+proved that every bridgeless graph has a nowhere-zero $\Gamma$-flow
+\cite{Kilpatrick1975,Jaeger1976}, or, equivalently by Tutte's group-flow
+theorem, a nowhere-zero 8-flow~\cite{Tutte1954}. (Seymour's later 6-flow
+theorem~\cite{Seymour1981} is stronger, but unnecessary here.) We now massage
+this $\Gamma$-flow into a cycle double cover; this reduction only requires that
+the underlying graph $G$ is loopless and cubic.
+
+\begin{lemma}\label{lem:pair-labeling}
+Let $G$ be a loopless cubic multigraph. Suppose that every edge $e$ is assigned
+a two-element set $P_e\subseteq\Gamma$ such that, for every $v\in V(G)$ and
+$s\in\Gamma$,
+\begin{equation}\label{eq:local-evenness}
+  \bigl|\{e\ni v:s\in P_e\}\bigr|\in\{0,2\}.
+\end{equation}
+Then $G$ has a cycle double cover.
+\end{lemma}
+
+A proper 3-edge-colouring is an assignment of this form. For distinct
+$e_1,e_2\in\Gamma$, assign $\{0,e_1\}$, $\{0,e_2\}$, and $\{e_1,e_2\}$ to the
+red, blue, and green edges, respectively. At each vertex each of $0,e_1,e_2$
+then appears twice. Thus Lemma~\ref{lem:pair-labeling} can be seen as a suitably
+relaxed variant of a proper 3-edge-colouring.
+
+\begin{proof}
+For $s\in\Gamma$, let $M_s=\{e:s\in P_e\}$. By
+\eqref{eq:local-evenness}, every vertex has degree zero or two in $M_s$, so
+$M_s$ is a disjoint union of cycles. Every edge belongs to exactly two of the
+$M_s$, since $P_e$ has two elements. The cycle components of all the $M_s$,
+taken with multiplicity, form a cycle double cover.
+\end{proof}
+
+It remains to construct the sets $P_e$. Fix a nowhere-zero $\Gamma$-flow $f$.
+At each vertex $v$, locally order the incident edges as $a,b,c$ and write
+$x=f(a)$, $y=f(b)$, and $z=f(c)$. Since $\Gamma$ has characteristic two, the
+flow equation is $x+y+z=0$, so $z=x+y$; moreover $x$ and $y$ are distinct.
+Define
+\begin{equation}\label{eq:g-definition}
+  g_{v,a}=0,\qquad g_{v,b}=x,\qquad g_{v,c}=0.
+\end{equation}
+For any $t\in\Gamma$, the three local sets
+\begin{equation}\label{eq:local-sets}
+  \{t+g_{v,e},\,t+g_{v,e}+f(e)\}\qquad(e\ni v)
+\end{equation}
+are $\{t,t+x\}$, $\{t+x,t+z\}$, and $\{t,t+z\}$. Hence every vector occurs in
+zero or two of them. This assignment works locally, but the two ends of an
+edge need not assign it the same set.
+
+For $e=uv$, put $d_e=g_{u,e}+g_{v,e}$. For any $p\in\Gamma$,
+$\{A,A+p\}=\{B,B+p\}$ precisely when $A+B\in\{0,p\}$. Apply this with
+$A=t_u+g_{u,e}$, $B=t_v+g_{v,e}$, and $p=f(e)$. Then
+$A+B=t_u+t_v+d_e$, and the choice of $\epsilon_e\in\F_2$ records whether this
+vector is $0$ or $f(e)$. Thus the local sets in \eqref{eq:local-sets} agree
+across every edge precisely when there are $t_v\in\Gamma$ and
+$\epsilon_e\in\F_2$ satisfying
+\begin{equation}\label{eq:gluing-system}
+  t_u+t_v+\epsilon_e f(e)=d_e\qquad(e=uv).
+\end{equation}
+
+\begin{lemma}\label{lem:linear-system}
+The system \eqref{eq:gluing-system} has a solution.
+\end{lemma}
+
+Assuming the lemma, define
+\[
+  P_e=\{t_v+g_{v,e},\,t_v+g_{v,e}+f(e)\}
+\]
+using either endpoint $v$ of $e$. Equation~\eqref{eq:gluing-system} makes this
+independent of the endpoint, and $f(e)\ne 0$ makes the two elements distinct.
+The local calculation above gives \eqref{eq:local-evenness};
+Lemma~\ref{lem:pair-labeling} proves the theorem.
+
+\begin{proof}[Proof of Lemma~\ref{lem:linear-system}]
+Let
+\[
+  L:\Gamma^{V(G)}\oplus\F_2^{E(G)}\longrightarrow\Gamma^{E(G)},
+  \qquad
+  L(t,\epsilon)_e=t_u+t_v+\epsilon_e f(e)\quad(e=uv).
+\]
+Thus \eqref{eq:gluing-system} asks whether $d=(d_e)_e$ belongs to $\im L$.
+Let $\Gamma^*$ be the dual vector space of $\Gamma$; thus an element of
+$\Gamma^*$ is an $\F_2$-linear map from $\Gamma$ to $\F_2$. We may write a
+dual vector to $\Gamma^{E(G)}$ as a family
+$\eta=(\eta_e)_{e\in E(G)}$ with $\eta_e\in\Gamma^*$. By taking duals,
+$d\in\im L$ if and only if every such family which takes the value zero on
+$\im L$ also satisfies $\sum_e\eta_e(d_e)=0$. Now
+\[
+  \sum_e\eta_e\bigl(L(t,\epsilon)_e\bigr)
+  =\sum_v\left(\sum_{e\ni v}\eta_e\right)(t_v)
+   +\sum_e\epsilon_e\eta_e(f(e)).
+\]
+Since the $t_v$ and $\epsilon_e$ may be chosen independently, this vanishes for
+every $(t,\epsilon)$ precisely when
+\begin{equation}\label{eq:dual-constraints}
+  \eta_e(f(e))=0\quad(e\in E(G)),
+  \qquad
+  \sum_{e\ni v}\eta_e=0\quad(v\in V(G)).
+\end{equation}
+Consequently, it suffices to prove that every family satisfying
+\eqref{eq:dual-constraints} also satisfies
+\begin{equation}\label{eq:d-annihilated}
+  \sum_e\eta_e(d_e)=0.
+\end{equation}
+
+Fix $v$ and retain the notation $a,b,c,x,y,z$. The conditions
+\eqref{eq:dual-constraints} become
+\begin{equation}\label{eq:local-dual-constraints}
+  \eta_a+\eta_b+\eta_c=0,
+  \qquad
+  \eta_a(x)=0,
+  \qquad
+  \eta_b(y)=0,
+  \qquad
+  \eta_c(z)=0.
+\end{equation}
+Set $\lambda=\eta_b(x)$. Since $\eta_c=\eta_a+\eta_b$ and $z=x+y$,
+\[
+  0=\eta_c(z)=\eta_a(y)+\eta_b(x),
+\]
+where we used $\eta_a(x)=\eta_b(y)=0$. Hence $\eta_a(y)=\lambda$. By
+\eqref{eq:g-definition}, only the edge $b$ contributes at $v$, and therefore
+\begin{equation}\label{eq:local-g-sum}
+  \sum_{e\ni v}\eta_e(g_{v,e})=\eta_b(x)=\lambda.
+\end{equation}
+
+We next interpret $\lambda$. If $\lambda=0$, all three dual vectors vanish on
+$W=\langle x,y\rangle$. There is a unique nonzero dual vector which vanishes on
+this two-dimensional space, so each of $\eta_a,\eta_b,\eta_c$ is either zero or
+this vector. Since their sum is zero, the nonzero vector occurs zero or two
+times. If $\lambda=1$, their values on the ordered basis $x,y$ are $(0,1)$,
+$(1,0)$, and $(1,1)$, so all three are nonzero. In either case, $\lambda$ is
+the parity of the number of nonzero members of
+$\{\eta_a,\eta_b,\eta_c\}$. Thus, writing $\ind_{\eta\ne 0}$ for the
+corresponding bit,
+\begin{equation}\label{eq:local-parity}
+  \sum_{e\ni v}\eta_e(g_{v,e})
+  =\sum_{e\ni v}\ind_{\eta_e\ne 0}.
+\end{equation}
+
+Finally, for $e=uv$, the definition $d_e=g_{u,e}+g_{v,e}$ and linearity of
+$\eta_e$ give
+$\eta_e(d_e)=\eta_e(g_{u,e})+\eta_e(g_{v,e})$. Summing over all edges and then
+grouping the two endpoint terms at each vertex, \eqref{eq:local-parity} gives
+\[
+  \sum_e\eta_e(d_e)
+  =\sum_v\sum_{e\ni v}\eta_e(g_{v,e})
+  =\sum_v\sum_{e\ni v}\ind_{\eta_e\ne 0}.
+\]
+Each edge with $\eta_e\ne 0$ occurs twice in the last sum, once at each
+endpoint. Hence it equals $2\sum_e\ind_{\eta_e\ne 0}=0$ in $\F_2$. This proves
+\eqref{eq:d-annihilated}; by the duality criterion above, $d\in\im L$, so
+\eqref{eq:gluing-system} has a solution.
+\end{proof}
+
+\begin{thebibliography}{10}
+
+\bibitem{AlspachGoddynZhang1994}
+B.~Alspach, L.~A. Goddyn, and C.-Q. Zhang,
+\emph{Graphs with the circuit cover property},
+Trans. Amer. Math. Soc. \textbf{344} (1994), 131--154.
+
+\bibitem{ItaiRodeh1978}
+A.~Itai and M.~Rodeh,
+\emph{Covering a graph by circuits},
+in \emph{Automata, Languages and Programming} (G.~Ausiello and C.~B\"ohm, eds.),
+Lecture Notes in Comput. Sci. \textbf{62}, Springer, 1978, 289--299.
+
+\bibitem{Jaeger1985}
+F.~Jaeger,
+\emph{A survey of the cycle double cover conjecture},
+in \emph{Cycles in Graphs}, North-Holland Math. Stud. \textbf{115},
+North-Holland, 1985, 1--12.
+
+\bibitem{Jaeger1976}
+F.~Jaeger,
+\emph{On nowhere-zero flows in multigraphs},
+in \emph{Proceedings of the Fifth British Combinatorial Conference},
+Congr. Numer. XV, Utilitas Math., 1976, 373--378.
+
+\bibitem{Kilpatrick1975}
+P.~A. Kilpatrick,
+\emph{Tutte's first colour-cycle conjecture},
+M.Sc. thesis, University of Cape Town, 1975.
+
+\bibitem{Seymour1979}
+P.~D. Seymour,
+\emph{Sums of circuits},
+in \emph{Graph Theory and Related Topics}, Academic Press, 1979, 341--355.
+
+\bibitem{Seymour1981}
+P.~D. Seymour,
+\emph{Nowhere-zero 6-flows},
+J. Combin. Theory Ser. B \textbf{30} (1981), 130--135.
+
+\bibitem{Szekeres1973}
+G.~Szekeres,
+\emph{Polyhedral decompositions of cubic graphs},
+Bull. Austral. Math. Soc. \textbf{8} (1973), 367--387.
+
+\bibitem{Tutte1954}
+W.~T. Tutte,
+\emph{A contribution to the theory of chromatic polynomials},
+Canad. J. Math. \textbf{6} (1954), 80--91.
+
+\bibitem{Tutte1987}
+W.~T. Tutte,
+personal correspondence with H.~Fleischner, July 22, 1987.
+
+\end{thebibliography}
+
+\end{document}

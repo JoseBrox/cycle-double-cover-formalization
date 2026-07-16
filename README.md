@@ -1,73 +1,99 @@
 # Cycle Double Cover formalization
 
-This public repository preserves the audited Lean 4 formalization of the self-contained argument in *A Proof of the Cycle Double Cover Conjecture*.
+[![Verify formalization](https://github.com/JoseBrox/cycle-double-cover-formalization/actions/workflows/lean.yml/badge.svg)](https://github.com/JoseBrox/cycle-double-cover-formalization/actions/workflows/lean.yml)
 
-The formalization was produced by [Aristotle](https://aristotle.harmonic.fun), with preparation, orchestration, and critical audit performed through ChatGPT. The repository description supplied by the owner is preserved.
+This repository contains a Lean 4 formalization of the self-contained argument in
+*A Proof of the Cycle Double Cover Conjecture*. Aristotle produced the Lean development;
+ChatGPT was used to prepare the source material, direct the formalization, and perform the
+critical audit recorded in [`AUDIT_REPORT.md`](AUDIT_REPORT.md).
 
-## Canonical proof artifact
+## Result and exact scope
 
-The complete, exact, reproducible project is stored in:
-
-```text
-formalization-source.tar.gz
-```
-
-Its SHA-256 digest is:
-
-```text
-2d710dab7d08c26051b469d98ab59ec0e4a3c155ea4ee2c47b7e164e16611395
-```
-
-To inspect and verify it:
-
-```bash
-sha256sum -c FORMALIZATION_SHA256.txt
-mkdir formalization
- tar -xzf formalization-source.tar.gz -C formalization
-cd formalization
-./VERIFY.sh
-```
-
-The archive contains:
-
-- the complete Lean sources under `RequestProject/`;
-- the public root module `CycleDoubleCover.lean`;
-- pinned Lean and Mathlib metadata;
-- the dependency map linking the paper to Lean declarations;
-- source and finite-algebra audits;
-- the reconstructed paper source;
-- the exact revised Aristotle response archive;
-- the full critical audit report.
-
-GitHub Actions independently verifies the archive digest, extracts the project, runs the source scan and finite checks, and invokes the pinned Lean build.
-
-## Precisely what is formalized
-
-The unconditional core theorem is:
+The fully proved core theorem is
 
 ```lean
 CycleDoubleCover.OrientedMultiGraph.cycleDoubleCover_of_nowhereZero_gammaFlow
 ```
 
-It proves that a finite loopless cubic edge-indexed multigraph carrying a nowhere-zero flow in `Gamma = (ZMod 2)^3` has a cycle double cover.
+It states that a finite loopless cubic edge-indexed multigraph carrying a nowhere-zero flow in
 
-The all-graphs assembly theorem is intentionally conditional:
+```text
+Gamma = (ZMod 2)^3
+```
+
+has a cycle double cover.
+
+The all-graphs assembly theorem is deliberately conditional:
 
 ```lean
 CycleDoubleCover.OrientedMultiGraph.cycleDoubleCoverConjecture_of_gammaFlow_of_cubicReduction
 ```
 
-It takes the two external results cited by the paper as explicit parameters: the Kilpatrick–Jaeger nowhere-zero `Gamma`-flow theorem and Jaeger's cubic reduction. Those two cited results are not formalized here and are not introduced as project axioms.
+It takes two classical results cited by the paper as explicit parameters:
 
-## Audit status
+1. the Kilpatrick--Jaeger theorem giving a nowhere-zero `Gamma`-flow;
+2. Jaeger's reduction to loopless cubic multigraphs.
 
-No important flaw was found in the revised formalization. See [`AUDIT_REPORT.md`](AUDIT_REPORT.md) for the exact scope, checks, and limitations.
+Those two external results are not formalized here and are not introduced as project axioms.
+The development also uses the explicit hypothesis `EveryEdgeInCycle`; it does not claim to have
+formalized its equivalence with a separately defined cut-edge notion of bridgelessness.
 
-The project contains no `sorry`, `admit`, project `axiom`, `native_decide`, `@[implemented_by]`, unsafe proof-producing declaration, or `exact?` placeholder. Independent exhaustive checks cover the finite algebra at the proof's crux.
+## How the proof is organized
 
-## Attribution
+The formalization follows the paper's argument rather than replacing it with a finite search.
 
-The source project requests the following attribution:
+1. [`Cycles.lean`](RequestProject/Cycles.lean) defines genuine connected cycles and cycle double
+   covers for finite edge-indexed multigraphs.
+2. [`CycleDecomposition.lean`](RequestProject/CycleDecomposition.lean) proves that a loopless
+   degree-`0`-or-`2` edge set splits into connected cycles.
+3. [`PairLabels.lean`](RequestProject/PairLabels.lean) formalizes Lemma 2.1 and the local
+   three-pair triangle argument.
+4. [`LinAlgDual.lean`](RequestProject/LinAlgDual.lean),
+   [`DualParity.lean`](RequestProject/DualParity.lean), and
+   [`Duality.lean`](RequestProject/Duality.lean) formalize the annihilator criterion, the local
+   parity calculation, and Lemma 2.2.
+5. [`Core.lean`](RequestProject/Core.lean) constructs the pair labels and proves the
+   self-contained core theorem.
+6. [`EightFlow.lean`](RequestProject/EightFlow.lean),
+   [`CubicReduction.lean`](RequestProject/CubicReduction.lean), and
+   [`Global.lean`](RequestProject/Global.lean) state the two imported theorem interfaces and
+   assemble the conditional global conclusion.
+
+[`DEPENDENCY_MAP.md`](DEPENDENCY_MAP.md) gives the detailed correspondence between the paper's
+numbered equations and Lean declarations. The internal module path `RequestProject` is retained
+from the audited Aristotle output; [`CycleDoubleCover.lean`](CycleDoubleCover.lean) is the public
+root module.
+
+## Verification
+
+The project is pinned to Lean `v4.28.0` and Mathlib `v4.28.0` at commit
+`8f9d9cff6bd728b17a24e163c9402775d9e6a365`.
+
+On a networked machine with `elan`, run:
+
+```bash
+./VERIFY.sh
+```
+
+This command verifies the recorded source hashes, scans for forbidden proof placeholders and
+proof-producing escape hatches, runs independent exhaustive checks of the finite `F_2^3`
+identities, executes `lake build`, and prints the axioms of the two principal declarations.
+
+GitHub Actions performs the same checks on every push and pull request. The authoritative Lean
+axiom audit is in [`RequestProject/Audit.lean`](RequestProject/Audit.lean).
+
+The reconstructed paper source is available at [`paper/cdc_proof.tex`](paper/cdc_proof.tex).
+
+## Provenance and editorial policy
+
+The directly browsable source tree is the audited formalization artifact. Git records every file
+and every subsequent change; [`SHA256SUMS`](SHA256SUMS) provides an additional content manifest.
+
+The mathematical declarations and proof terms are those produced in the audited Aristotle
+revision. The publication pass changed only documentation and one obsolete prompt-style comment
+in `PairLabels.lean`; it did not refactor proof scripts merely for appearance.
+
+The source project requests the following attribution when the formalization is reused:
 
 ```text
 Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
@@ -75,4 +101,5 @@ Co-authored-by: Aristotle (Harmonic) <aristotle-harmonic@harmonic.fun>
 
 ## License status
 
-No software license was supplied with the formalization. The repository is public for inspection and verification, but no additional reuse license is asserted here.
+No software license was supplied with the formalization. The repository is public for inspection
+and verification, but no additional reuse license is asserted here.

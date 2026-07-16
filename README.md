@@ -79,8 +79,9 @@ This command verifies the recorded source hashes, scans for forbidden proof plac
 proof-producing escape hatches, runs independent exhaustive checks of the finite `F_2^3`
 identities, executes `lake build`, and prints the axioms of the two principal declarations.
 
-GitHub Actions performs the same checks on every push and pull request. The authoritative Lean
-axiom audit is in [`RequestProject/Audit.lean`](RequestProject/Audit.lean).
+GitHub Actions performs those checks on every push, pull request, and manual dispatch. It also
+runs Lean's bundled independent environment checker. The authoritative Lean axiom audit is in
+[`RequestProject/Audit.lean`](RequestProject/Audit.lean).
 
 The reconstructed paper source is available at [`paper/cdc_proof.tex`](paper/cdc_proof.tex).
 
